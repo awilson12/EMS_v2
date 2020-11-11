@@ -1,0 +1,190 @@
+
+require(ggplot2)
+require(ggpubr)
+
+plot.frame.temp<-plot.frame[!is.na(plot.frame$sd) & !is.na(plot.frame$means),]
+
+plot.frame.temp<-plot.frame.temp[plot.frame.temp$state=="resp para 1" | plot.frame.temp$state=="para mucous 1",]
+
+plot.frame.temp$state[plot.frame.temp$state=="resp para 1"]<-"Respiratory Tract"
+plot.frame.temp$state[plot.frame.temp$state=="para mucous 1"]<-"Facial Mucosal Membrane"
+
+plot.frame$model[plot.frame$model=="No one Masked"]<-"No One with Respirators"
+plot.frame$model[plot.frame$model=="Patient mask Only"]<-"Patient Respirator Only"
+plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"Patient and First Responder Respirators"
+plot.frame$model[plot.frame$model=="Paramedics Masked Only"]<-"First Responder Respirators Only"
+
+windows()
+A<-ggplot(plot.frame.temp[plot.frame.temp$time<=1900,])+geom_line(aes(x=time*0.01,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
+  geom_ribbon(aes(x=time*0.01,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=state),alpha=0.3)+
+  #scale_y_continuous(trans="log10")+
+  facet_wrap(~model,scales="free")+
+  scale_x_continuous(name="Time (Minutes)")+theme_pubr()+
+  scale_y_continuous(name="Viral Particles")+
+  scale_fill_manual(name="",values=c("#999999", "#E69F00"))+
+  scale_color_manual(name="",values=c("#999999", "#E69F00"))+
+  scale_linetype_discrete(name="")+
+  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+        legend.title=element_text(size=20),legend.text=element_text(size=20),
+        strip.text=element_text(size=20))
+A
+
+plot.frame.temp<-plot.frame[plot.frame$state=="para hands 1" | plot.frame$state=="radio",]
+plot.frame.temp$state[plot.frame.temp$state=="para hands 1"]<-"First Responder's Hands"
+plot.frame.temp$state[plot.frame.temp$state=="radio"]<-"Radio"
+windows()
+A<-ggplot(plot.frame.temp[plot.frame.temp$time<=1800,])+geom_line(aes(x=time*0.01,y=means,group=state,color=state),size=1.1)+
+  geom_ribbon(aes(x=time*0.01,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=state,fill=state),alpha=0.3)+
+  scale_x_continuous(name="Time (Minutes)",trans="log10")+theme_pubr()+
+  scale_y_continuous(name="Viral Particles",trans="log10")+
+  scale_fill_discrete(name="")+
+  scale_color_discrete(name="")+
+  scale_fill_manual(name="",values=c("#999999", "#E69F00"))+
+  scale_color_manual(name="",values=c("#999999", "#E69F00"))+
+  scale_linetype_discrete(name="")+
+  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+        legend.title=element_text(size=20),legend.text=element_text(size=20),
+        strip.text=element_text(size=20))
+A
+
+plot.frame.temp<-plot.frame[plot.frame$state=="para mucous 1" | plot.frame$state=="para mucous 2" |
+                              plot.frame$state=="resp para 1" | plot.frame$state=="resp para 2" |
+                              plot.frame$state=="room air" | plot.frame$state=="loss of viability",]
+
+windows()
+A<-ggplot(plot.frame.temp)+geom_line(aes(x=time,y=means,group=interaction(state,model),linetype=model))+
+  geom_ribbon(aes(x=time,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=model),alpha=0.3)+
+  #scale_y_continuous(trans="log10")+
+  facet_wrap(~state,scales="free")+
+  scale_x_continuous(trans="log10")+theme_pubr()+
+  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+        legend.title=element_text(size=20),legend.text=element_text(size=20),
+        strip.text=element_text(size=20))
+A
+
+plot.frame<-airborneonly_1000_000000_0_010000_plot_frame
+plot.frame.temp<-plot.frame[!is.na(plot.frame$sd) & !is.na(plot.frame$means),]
+timestep<-0.01
+
+
+#para 1 doses, #para 2 doses and percentages attributable to aerosols vs fomites
+fracmucous1.model1<-plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient mask Only"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient mask Only"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1"& plot.frame.temp$model=="Patient mask Only"])
+fracresp1.model1<-plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Patient mask Only"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient mask Only"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Patient mask Only"])
+
+fracmucous1.model2<-plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="No one Masked"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="No one Masked"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1"& plot.frame.temp$model=="No one Masked"])
+fracresp1.model2<-plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="No one Masked"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="No one Masked"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="No one Masked"])
+
+fracmucous1.model3<-plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Paramedics Masked Only"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Paramedics Masked Only"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1"& plot.frame.temp$model=="Paramedics Masked Only"])
+fracresp1.model3<-plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Paramedics Masked Only"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Paramedics Masked Only"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Paramedics Masked Only"])
+
+fracmucous1.model4<-plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient and Paramedics Masked"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient and Paramedics Masked"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1"& plot.frame.temp$model=="Patient and Paramedics Masked"])
+fracresp1.model4<-plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Patient and Paramedics Masked"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient and Paramedics Masked"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1" & plot.frame.temp$model=="Patient and Paramedics Masked"])
+
+
+frame.temp.2<-data.frame(fraction=c(fracmucous1.model1,fracmucous1.model2,fracmucous1.model3,fracmucous1.model4,
+                                    fracresp1.model1,fracresp1.model2,fracresp1.model3,fracresp1.model4),
+                         type=c(rep("Mucous Membrane",length(fracmucous1.model1)*4),
+                                rep("Respiratory Tract",length(fracresp1.model1)*4)),
+                         time=rep(1:length(fracmucous1.model1),8),
+                         model=rep(c(rep("Patient Respirator Only",length(fracmucous1.model1)),
+                                     rep("No One with Respirators",length(fracmucous1.model2)),
+                                     rep("First Responder Respirators Only",length(fracmucous1.model3)),
+                                     rep("Patient and First Responder Respirator",length(fracmucous1.model4))),2))
+
+
+windows()
+ggplot(frame.temp.2[frame.temp.2$time>2 & frame.temp.2$time<=1900,],aes(x=time*timestep,y=fraction,fill=type))+geom_bar(stat="identity",alpha=0.5)+facet_wrap(~model)+
+  scale_x_continuous(name="Time (Minutes)")+
+  scale_y_continuous(name="Fraction of Dose")+
+  scale_fill_manual(name="Type of Dose",values=c("#999999", "#56B4E9"))+
+  theme_pubr()+
+  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+        legend.title=element_text(size=20),legend.text=element_text(size=20),
+        strip.text=element_text(size=20))
+
+
+
+#-------------- looking at infection risks ----------------------------------------
+
+#first import rds for allsenario files
+
+scenario.all<-rep(NA,4000)
+infect.surf<-rep(NA,4000)
+infect.airborne<-rep(NA,4000)
+
+for (i in 1:4000){
+  if(i<=1000){
+    scenario<-"Patient Respirator Only"
+  }else if (i>1000 & i<=2000){
+    scenario<-"No One with Respirators"
+  }else if (i>2000 & i<=3000){
+    scenario<-"First Responder Respirators Only"
+  }else{
+    scenario<-"Patient and First Responder Respirator"
+  }
+  
+  tempframe.surf<-allscenario.surfonly[[i]]
+  tempframe.airborne<-allscenario.airborneonly[[i]]
+  
+  scenario.all[i]<-scenario
+  infect.surf[i]<-tempframe.surf$infect1[1]
+  infect.airborne[i]<-tempframe.airborne$infect1[1]
+}
+
+infect.frame<-data.frame(scenario=rep(scenario.all,2),infect=c(infect.surf,infect.airborne),
+                         model=c(rep("Scenario 1",4000),rep("Scenario 2",4000)))
+infect.frame$scenario<-factor(infect.frame$scenario,levels=c("No One with Respirators", "First Responder Respirators Only","Patient Respirator Only",
+                                "Patient and First Responder Respirator"))
+windows()
+ggplot(infect.frame)+geom_violin(aes(x=scenario,y=infect,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
+  scale_y_continuous(trans="log10",name="Infection Risk")+facet_wrap(~model)+
+  scale_x_discrete(name="",labels=c("","","",""))+
+  scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
+  theme_pubr()+
+  theme(axis.title = element_text(size=16), axis.text=element_text(size=16),
+        legend.text= element_text(size=16),strip.text = element_text(size=16),legend.position = "right",
+        axis.ticks.x=element_blank())
+
+#scenario 2-------------------------------------------------------------------------------------------------------------------
+
+#% changes in infection risk 
+baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
+
+#First responder w/ respirator
+int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="First Responder Respirators Only" ])
+
+(baseline-int.1)/baseline*100
+
+#Patient w/ respirator
+int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient Respirator Only" ])
+
+(baseline-int.2)/baseline*100
+
+#Both w/ respirator
+int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+
+(baseline-int.3)/baseline*100
+
+#scenario 1--------------------------------------------------------------------------------------------------------------------
+
+#% changes in infection risk 
+baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="No One with Respirators" ])
+
+#First responder w/ respirator
+int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="First Responder Respirators Only" ])
+
+(baseline-int.1)/baseline*100
+
+#Patient w/ respirator
+int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient Respirator Only" ])
+
+(baseline-int.2)/baseline*100
+
+#Both w/ respirator
+int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+
+(baseline-int.3)/baseline*100
+
+
+
+
