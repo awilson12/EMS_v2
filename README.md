@@ -1,6 +1,6 @@
 main_file.R
 -------------------------------------------------------
-All senarios can be run from the file, "mail_file.R". This will create nested folders for saving outputs, including mean and sd concentrations in states over time, a list with dataframes including each simulation iteration, and a list with dataframes including input parameters per iteration.
+All senarios can be run from the file, "mail_file.R". This will create nested folders for saving outputs, including mean and sd concentrations in states over time, a list with dataframes including each simulation iteration, and a list with dataframes including input parameters per iteration. From this file, the other below files will be run with the exception of the iteration check files.
 
 scenarios.R
 --------------------------------------------------------
