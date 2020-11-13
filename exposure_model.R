@@ -32,18 +32,39 @@ source('defining_parameters.R')
         #parameters from PPE paper with Marco (triangular informed by Guo et al. 2020,
         #which are genome copies/swabbed area) / assumptions about area swabbed x assumed
         #fraction to be infectious
-        chance.contam<-runif(6,0,1)
-        fraction.contam<-runif(1,0.4,0.75) #between 40 and 75% positivity rate
-        SA<-c(glucometer.SA,headphones.SA,jumpbag.SA,keyboard.SA,touchscreen.SA,radio.SA)
+        #chance.contam<-runif(6,0,1)
+        #fraction.contam<-runif(1,0.4,0.75) #between 40 and 75% positivity rate
+        #SA<-c(glucometer.SA,headphones.SA,jumpbag.SA,keyboard.SA,touchscreen.SA,radio.SA)
         
-        for (z in 1:6){
-          if (chance.contam[z]<=fraction.contam){
-            conc<-(rtriangle(1,a=3.3E3, c=2.8E4, b=6.6E4)/rtriangle(1,a=5,b=195,c=100))*runif(1,0.001,0.1)
-          }else{
-            conc<-0
-          }
-          sim.mat[2+z,1]<-conc*SA[z]
+        #we pull concentrations from scenario 1 with the same mask scenario and iteration #
+        
+        if (patientmask==TRUE & paramask==TRUE){
+          tempframe<-scenario1.output[[l]]
+        }else if (patientmask==FALSE & paramask==FALSE){
+          tempframe<-scenario2.output[[l]]
+        }else if (patientmask==FALSE & paramask==TRUE){
+          tempframe<-scenario3.output[[l]]
+        }else{
+          tempframe<-scenario4.output[[l]]
         }
+        
+        final.time<-length(tempframe$state1)
+        
+        sim.mat[3,1]<-tempframe$state3[final.time]
+        sim.mat[4,1]<-tempframe$state4[final.time]
+        sim.mat[5,1]<-tempframe$state5[final.time]
+        sim.mat[6,1]<-tempframe$state6[final.time]
+        sim.mat[7,1]<-tempframe$state7[final.time]
+        sim.mat[8,1]<-tempframe$state8[final.time]
+        
+        #for (z in 1:6){
+          #if (chance.contam[z]<=fraction.contam){
+            #conc<-(rtriangle(1,a=3.3E3, c=2.8E4, b=6.6E4)/rtriangle(1,a=5,b=195,c=100))*runif(1,0.001,0.1)
+          #}else{
+          #  conc<-0
+          #}
+          #sim.mat[2+z,1]<-conc*SA[z]
+        #}
         
         #set other states starting at zero
         sim.mat[1:2,1]<-0
