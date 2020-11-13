@@ -35,9 +35,10 @@ radio.SA<-50.84
 H.mouth<-rtrunc(iter,"norm",mean=2.9,sd=2.5,a=0,b=10)*(1/60)
 H.nose<-rtrunc(iter,"norm",mean=2.5,sd=2.2,a=0,b=14)*(1/60)
 
-H.face<-H.mouth+H.nose
 #if using mask
 H.eyes<-rtrunc(iter,"norm",mean=2.4,sd=1.9,a=0,b=8)*(1/60)
+
+H.face<-H.mouth+H.nose+H.eyes
 
 #fraction of hand surface area for hand-to-surf contact
 S.H<-runif(iter,0.006,0.24)
