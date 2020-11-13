@@ -33,8 +33,10 @@ radio.SA<-50.84
 #hand-to-face contact frequency (in contacts/hr x 1 hr/60 min to conver to per min)
 
 #if not using mask
-H.face<-rtrunc(iter,"norm",mean=14,sd=5.4,a=0,b=30)*(1/60)*(1/2) #account for only one hand being used
+H.mouth<-rtrunc(iter,"norm",mean=2.9,sd=2.5,a=0,b=10)*(1/60)*(1/2) #account for only one hand being used
+H.nose<-rtrunc(iter,"norm",mean=2.5,sd=2.2,a=0,b=14)*(1/60)*(1/2)
 
+H.face<-H.mouth+H.nose
 #if using mask
 H.eyes<-rtrunc(iter,"norm",mean=2.4,sd=1.9,a=0,b=8)*(1/60)*(1/2) #account for only one hand being used
 
