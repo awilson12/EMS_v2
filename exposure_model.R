@@ -38,13 +38,13 @@ source('defining_parameters.R')
         
         #we pull concentrations from scenario 1 with the same mask scenario and iteration #
         
-        if (patientmask==TRUE & paramask==TRUE){
+        if (patientmask==TRUE & paramask==FALSE){
           tempframe<-scenario1.output[[l]]
         }else if (patientmask==FALSE & paramask==FALSE){
           tempframe<-scenario2.output[[l]]
         }else if (patientmask==FALSE & paramask==TRUE){
           tempframe<-scenario3.output[[l]]
-        }else{
+        }else if (patientmask==TRUE & paramask==TRUE){
           tempframe<-scenario4.output[[l]]
         }
         
