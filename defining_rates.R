@@ -61,21 +61,21 @@ lambda.1.16<-inactiv.air
 #ROWS 3-8---------------------------------------------------------
 
 #transition of fomites to hands
-non.fome.specific<-S.H*TE.SH*A.hand*H.surf
+non.fome.specific<-S.H*TE.SH*A.hand
 
-lambda.3.12<-glucometer*glucometer.SA*non.fome.specific
-lambda.4.12<-headphones*headphones.SA*non.fome.specific
-lambda.5.12<-jumpbag*jumpbag.SA*non.fome.specific
-lambda.6.12<-keyboard*keyboard.SA*non.fome.specific
-lambda.7.12<-touchscreen*touchscreen.SA*non.fome.specific
-lambda.8.12<-radio*radio.SA*non.fome.specific
+lambda.3.12<-glucometer*(1/glucometer.SA)*non.fome.specific
+lambda.4.12<-headphones*(1/headphones.SA)*non.fome.specific
+lambda.5.12<-jumpbag*(1/jumpbag.SA)*non.fome.specific
+lambda.6.12<-keyboard*(1/keyboard.SA)*non.fome.specific
+lambda.7.12<-touchscreen*(1/touchscreen.SA)*non.fome.specific
+lambda.8.12<-radio*(1/radio.SA)*non.fome.specific
 
-lambda.3.13<-glucometer*glucometer.SA*non.fome.specific
-lambda.4.13<-headphones*headphones.SA*non.fome.specific
-lambda.5.13<-jumpbag*jumpbag.SA*non.fome.specific
-lambda.6.13<-keyboard*keyboard.SA*non.fome.specific
-lambda.7.13<-touchscreen*touchscreen.SA*non.fome.specific
-lambda.8.13<-radio*radio.SA*non.fome.specific
+lambda.3.13<-glucometer*(1/glucometer.SA)*non.fome.specific
+lambda.4.13<-headphones*(1/headphones.SA)*non.fome.specific
+lambda.5.13<-jumpbag*(1/jumpbag.SA)*non.fome.specific
+lambda.6.13<-keyboard*(1/keyboard.SA)*non.fome.specific
+lambda.7.13<-touchscreen*(1/touchscreen.SA)*non.fome.specific
+lambda.8.13<-radio*(1/radio.SA)*non.fome.specific
 
 #transiton of fomites to inviability
 lambda.3.16<-inactiv.fome
