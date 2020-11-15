@@ -2,8 +2,6 @@
 set.seed(34)
 
 #diameters<-c("d1","d2")
-  
-save.total<-list()
 
 source('defining_parameters.R')
   
@@ -17,6 +15,17 @@ source('defining_parameters.R')
   betaparam<-rep(NA,iter)
   
   infect1<-rep(NA,iter)
+  
+  if(airborne==TRUE){
+    
+    simsave3<-rep(NA,iter)
+    simsave4<-rep(NA,iter)
+    simsave5<-rep(NA,iter)
+    simsave6<-rep(NA,iter)
+    simsave7<-rep(NA,iter)
+    simsave8<-rep(NA,iter)
+    
+  }
     
     for (l in 1:iter){
       
@@ -30,26 +39,19 @@ source('defining_parameters.R')
         sim.mat[,1]<-rep(0,16)
       }else{
         #give non-zero starting conditions to surfaces for this scenario
+      
+        #final.time<-length(tempframe$state1)
         
-        #parameters from PPE paper with Marco (triangular informed by Guo et al. 2020,
-        #which are genome copies/swabbed area) / assumptions about area swabbed x assumed
-        #fraction to be infectious
-        chance.contam<-runif(6,0,1)
-        fraction.contam<-runif(1,0.4,0.75) #between 40 and 75% positivity rate
-        SA<-c(glucometer.SA,headphones.SA,jumpbag.SA,keyboard.SA,touchscreen.SA,radio.SA)
+        sim.mat[3,1]<-simsave3[l]
+        sim.mat[4,1]<-simsave4[l]
+        sim.mat[5,1]<-simsave5[l]
+        sim.mat[6,1]<-simsave6[l]
+        sim.mat[7,1]<-simsave7[l]
+        sim.mat[8,1]<-simsave8[l]
         
-        for (z in 1:6){
-          if (chance.contam[z]<=fraction.contam){
-            conc<-(rtriangle(1,a=3.3E3, c=2.8E4, b=6.6E4)/rtriangle(1,a=5,b=195,c=100))*runif(1,0.001,0.1)
-          }else{
-            conc<-0
-          }
-          sim.mat[2+z,1]<-conc*SA[z]
-        }
-        
-        #set other states starting at zero
         sim.mat[1:2,1]<-0
         sim.mat[9:16,1]<-0
+        
       }
       
       
@@ -119,6 +121,17 @@ source('defining_parameters.R')
       
       dose1<-sim.mat[9,i]+sim.mat[14,i]
       dose2<-sim.mat[10,i]+sim.mat[15,i]
+      
+      if(airborne==TRUE){
+        
+        simsave3[l]<-sim.mat[3,i]
+        simsave4[l]<-sim.mat[4,i]
+        simsave5[l]<-sim.mat[5,i]
+        simsave6[l]<-sim.mat[6,i]
+        simsave7[l]<-sim.mat[7,i]
+        simsave8[l]<-sim.mat[8,i]
+        
+      }
       
       infect1[l]<-1-hyperg_1F1(alphaparam[l], alphaparam[l]+betaparam[l], -dose1, give=FALSE, strict=TRUE)
     
