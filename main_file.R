@@ -2,7 +2,7 @@
 rm(list = ls())
 
 
-timestep=0.01 #0.001
+timestep=0.001 #0.001
 iter=1000
 
 airborneval<-c(TRUE,FALSE)
