@@ -78,10 +78,10 @@ RNAinfective<-runif(iter,0.001,0.01) #Range from Jones (2020)
 if (airborne==TRUE){
   if (patientmask==TRUE){
     #values from Leung et al (2020)
-    emissions<-(rtriangle(iter,a=10^0,b=10^5,c=10^0)/30)*(1-M)*RNAinfective
+    emissions<-(rtriangle(iter,a=10^0,b=10^5,c=10^0)/30)*(1-M)*RNAinfective*(timestep)
     
   }else{
-    emissions<-(rtriangle(iter,a=10^0,b=10^5,c=10^0)/30)*RNAinfective
+    emissions<-(rtriangle(iter,a=10^0,b=10^5,c=10^0)/30)*RNAinfective*(timestep)
   }
 }else{
   emissions<-rep(0,iter)
