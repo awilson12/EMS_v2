@@ -4,12 +4,12 @@
 require(gsl)
 
 timestep=0.001 #0.001
-iter=1000
+iter=10000
 
 airborne<-TRUE
 
-patientmask=FALSE
-paramask=FALSE
+patientmask=TRUE
+paramask=TRUE
 
 this.dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
 setwd(this.dir)    
