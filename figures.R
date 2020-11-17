@@ -15,8 +15,8 @@ plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"Patient an
 plot.frame$model[plot.frame$model=="Paramedics Masked Only"]<-"First Responder Respirators Only"
 
 windows()
-A<-ggplot(plot.frame.temp[plot.frame.temp$time<=1000,])+geom_line(aes(x=time*0.01,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
-  geom_ribbon(aes(x=time*0.01,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=state),alpha=0.3)+
+A<-ggplot(plot.frame.temp[plot.frame.temp$time<=10000,])+geom_line(aes(x=time*0.001,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
+  geom_ribbon(aes(x=time*0.001,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=state),alpha=0.3)+
   #scale_y_continuous(trans="log10")+
   facet_wrap(~model,scales="free")+
   scale_x_continuous(name="Time (Minutes)")+theme_pubr()+
@@ -59,9 +59,9 @@ A<-ggplot(plot.frame.temp)+geom_line(aes(x=time,y=means,group=interaction(state,
         strip.text=element_text(size=20))
 A
 
-plot.frame<-airborneonly_1000_000000_0_010000_plot_frame
+plot.frame<-airborneonly_1000_000000_0_001000_plot_frame
 plot.frame.temp<-plot.frame[!is.na(plot.frame$sd) & !is.na(plot.frame$means),]
-timestep<-0.01
+timestep<-0.001
 
 
 #para 1 doses, #para 2 doses and percentages attributable to aerosols vs fomites
@@ -99,17 +99,17 @@ ggplot(frame.temp.2[frame.temp.2$time>2 & frame.temp.2$time<=1600,],aes(x=time*t
         legend.title=element_text(size=20),legend.text=element_text(size=20),
         strip.text=element_text(size=20))
 
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="No One with Respirators"]
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="No One with Respirators"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="No One with Respirators"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="No One with Respirators"]
 
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="Patient Respirator Only"]
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="Patient Respirator Only"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="Patient Respirator Only"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="Patient Respirator Only"]
 
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="First Responder Respirators Only"]
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="First Responder Respirators Only"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="First Responder Respirators Only"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="First Responder Respirators Only"]
 
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="Patient and First Responder Respirator"]
-frame.temp.2$fraction[frame.temp.2$time==1600 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="Patient and First Responder Respirator"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="Patient and First Responder Respirator"]
+frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="Patient and First Responder Respirator"]
 
 
 #-------------- looking at infection risks ----------------------------------------
@@ -162,8 +162,8 @@ ggplot(infect.frame)+geom_violin(aes(x=scenario,y=infect,group=scenario,fill=sce
   scale_x_discrete(name="",labels=c("","","",""))+
   scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
   theme_pubr()+
-  theme(axis.title = element_text(size=16), axis.text=element_text(size=16),
-        legend.text= element_text(size=16),strip.text = element_text(size=16),legend.position = "top",
+  theme(axis.title = element_text(size=20), axis.text=element_text(size=20),
+        legend.text= element_text(size=20),strip.text = element_text(size=20),legend.position = "right",
         axis.ticks.x=element_blank())
 
 #scenario 1-------------------------------------------------------------------------------------------------------------------
