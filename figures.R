@@ -15,7 +15,7 @@ plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"Patient an
 plot.frame$model[plot.frame$model=="Paramedics Masked Only"]<-"First Responder Respirators Only"
 
 windows()
-A<-ggplot(plot.frame.temp[plot.frame.temp$time<=10000,])+geom_line(aes(x=time*0.001,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
+A<-ggplot(plot.frame.temp[plot.frame.temp$time<=5000,])+geom_line(aes(x=time*0.001,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
   geom_ribbon(aes(x=time*0.001,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=state),alpha=0.3)+
   #scale_y_continuous(trans="log10")+
   facet_wrap(~model,scales="free")+
@@ -148,6 +148,18 @@ for (i in 1:4000){
 }
 
 deposition.check<-data.frame(scenario=scenario.all,infect=infect.surf,surfdepo=surf.conc.sum,starting.conc.sum=starting.conc.sum)
+
+windows()
+ggplot(deposition.check)+
+  geom_violin(aes(x=scenario,y=starting.conc.sum,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
+  scale_y_continuous(trans="log10",name="Amount of Virus on Surfaces")+
+  scale_x_discrete(name="",labels=c("","","",""))+
+  scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
+  theme_pubr()+
+  theme(axis.title = element_text(size=20), axis.text=element_text(size=20),
+        legend.text= element_text(size=20),strip.text = element_text(size=20),legend.position = "right",
+        axis.ticks.x=element_blank())
+  
 
 ggplot(deposition.check)+geom_violin(aes(x=scenario,y=infect.surf,group=scenario,fill=scenario))+
   scale_y_continuous(trans="log10")

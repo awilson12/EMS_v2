@@ -62,7 +62,7 @@ inactiv.hands<-runif(iter,0.77,4.61)*(1/60)
 V.room<-9.9 #m^3
 
 #inhalation rate
-I<-rtrunc(iter,"norm",mean=2.6E-2,sd=5.5E-3,a=1.5E-2) #m^3/min
+I<-rtrunc(iter,"norm",mean=2.6E-2,sd=6.0E-3,a=1.4E-2) #m^3/min
 
 #mask efficacy
 M<-rtrunc(iter,"norm",mean=0.95,sd=0.1,a=0,b=1)
@@ -73,7 +73,7 @@ AER<-runif(iter,36,138)*(1/60)
 #gravitational settling, d1 aerosols (per day, so multiply by (1/24)*(1/60)) to conver to per min
 d1.settle<-rtriangle(iter,a=21.60,b=36,c=28.80)*(1/24)*(1/60)
 
-RNAinfective<-runif(iter,0.001,0.01) #Range from Jones (2020)
+RNAinfective<-runif(iter,0.001,0.01) 
 
 if (airborne==TRUE){
   if (patientmask==TRUE){
