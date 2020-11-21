@@ -22,6 +22,14 @@ expsure_model.R
 ----------------------------------------------------
 Simulation loop and saving output
 
+figures.R
+--------------------------------------------------
+Code for producing figures unrelated to sensitivity analysis
+
+sensitivity analysis.R
+--------------------------------------------------
+Code for sensitivity analysis results and figure
+
 Exact_BetaPoisson_Bootstrap.csv
 ----------------------------------------------------
 Contains alpha and beta values for dose-response calculations.
