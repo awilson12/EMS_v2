@@ -77,7 +77,7 @@ source('defining_parameters.R')
       
       for (i in 2:(call[l]*(1/timestep))){
         
-        sim.mat[1,i]<-sim.mat[1,i-1]-sim.mat[1,i-1]*sum(P.1.total[2:16])+emissions[l]
+        sim.mat[1,i]<-sim.mat[1,i-1]-(sim.mat[1,i-1]*sum(P.1.total[2:16]))+emissions[l]
         
         
         sim.mat[2,i]<-sim.mat[2,i-1]+sim.mat[1,i-1]*P.1.total[2]
@@ -125,14 +125,14 @@ source('defining_parameters.R')
           (sim.mat[3,i-1]*P.3.total[13])+(sim.mat[4,i-1]*P.4.total[13])+(sim.mat[5,i-1]*P.5.total[13])+
           (sim.mat[6,i-1]*P.6.total[13])+(sim.mat[7,i-1]*P.7.total[13])+(sim.mat[8,i-1]*P.8.total[13])
         
-        
         sim.mat[14,i]<-sim.mat[14,i-1]+(sim.mat[12,i-1]*P.12.total[14])
         
         sim.mat[15,i]<-sim.mat[15,i-1]+(sim.mat[13,i-1]*P.13.total[15])
         
-        sim.mat[16,i]<-sim.mat[16,i-1]+(sim.mat[3,i-1]*P.3.total[16])+(sim.mat[4,i-1]*P.4.total[16])+
+        sim.mat[16,i]<-sim.mat[16,i-1]+(sim.mat[1,i-1]*P.1.total[16])+(sim.mat[3,i-1]*P.3.total[16])+(sim.mat[4,i-1]*P.4.total[16])+
           (sim.mat[5,i-1]*P.5.total[16])+(sim.mat[6,i-1]*P.6.total[16])+(sim.mat[7,i-1]*P.7.total[16])+
           (sim.mat[8,i-1]*P.8.total[16])+(sim.mat[12,i-1]*P.12.total[16])+(sim.mat[13,i-1]*P.13.total[16])
+        
         
       }#end of time loop (i)
       
@@ -165,7 +165,8 @@ source('defining_parameters.R')
   
   params<-data.frame(TE.HS=TE.HS,TE.SH=TE.SH,TE.HF=TE.HF,H.surf=H.surf,H.face=H.face,H.eyes=H.eyes,
                      S.H=S.H,S.F=S.F,A.hand=A.hand,inactiv.fome=inactiv.fome,inactiv.air=inactiv.air,
-                     inactiv.hands=inactiv.hands,I=I,M=M,AER=AER,alpha=alphaparam,beta=betaparam)
+                     inactiv.hands=inactiv.hands,I=I,M=M,AER=AER,alpha=alphaparam,beta=betaparam,
+                     emissions=emissions)
   
   #save.all<<-save.list
   #params.all<<-params.list

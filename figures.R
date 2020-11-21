@@ -116,6 +116,9 @@ frame.temp.2$fraction[frame.temp.2$time==16000 & frame.temp.2$type=="Mucous Memb
 
 #first import rds for allsenario files
 
+allscenario.airborneonly <- readRDS("~/EMS_v2/airborneonly/allscenario.airborneonly.1000.000000.0.001000.plot.frame.rds")
+allscenario.surfonly <- readRDS("~/EMS_v2/surfonly/allscenario.surfonly.1000.000000.0.001000.plot.frame.rds")
+
 scenario.all<-rep(NA,4000)
 infect.surf<-rep(NA,4000)
 infect.airborne<-rep(NA,4000)
@@ -209,6 +212,9 @@ sd(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=
 #% changes in infection risk 
 baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
 
+summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
+
 #First responder w/ respirator
 int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="First Responder Respirators Only" ])
 
@@ -223,6 +229,9 @@ int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$
 int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
 
 (baseline-int.3)/baseline*100
+
+summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
 
 
 
