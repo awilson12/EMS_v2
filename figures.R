@@ -2,6 +2,11 @@
 require(ggplot2)
 require(ggpubr)
 
+plot.frame$model[plot.frame$model=="No one Masked"]<-"A. No One with Respirators"
+plot.frame$model[plot.frame$model=="Patient mask Only"]<-"C. Patient Respirator Only"
+plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"D. Patient and First Responder Respirators"
+plot.frame$model[plot.frame$model=="Paramedics Masked Only"]<-"B. First Responder Respirators Only"
+
 plot.frame.temp<-plot.frame[!is.na(plot.frame$sd) & !is.na(plot.frame$means),]
 
 plot.frame.temp<-plot.frame.temp[plot.frame.temp$state=="resp para 1" | plot.frame.temp$state=="para mucous 1",]
@@ -9,18 +14,13 @@ plot.frame.temp<-plot.frame.temp[plot.frame.temp$state=="resp para 1" | plot.fra
 plot.frame.temp$state[plot.frame.temp$state=="resp para 1"]<-"Respiratory Tract"
 plot.frame.temp$state[plot.frame.temp$state=="para mucous 1"]<-"Facial Mucosal Membrane"
 
-plot.frame$model[plot.frame$model=="No one Masked"]<-"No One with Respirators"
-plot.frame$model[plot.frame$model=="Patient mask Only"]<-"Patient Respirator Only"
-plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"Patient and First Responder Respirators"
-plot.frame$model[plot.frame$model=="Paramedics Masked Only"]<-"First Responder Respirators Only"
-
 windows()
 A<-ggplot(plot.frame.temp[plot.frame.temp$time<=5000,])+geom_line(aes(x=time*0.001,y=means,group=interaction(state,model),color=state,linetype=state),size=1.1)+
   geom_ribbon(aes(x=time*0.001,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=state),alpha=0.3)+
   #scale_y_continuous(trans="log10")+
   facet_wrap(~model,scales="free")+
   scale_x_continuous(name="Time (Minutes)")+theme_pubr()+
-  scale_y_continuous(name="Viral Particles")+
+  scale_y_continuous(name="Average Number of Viral Particles")+
   scale_fill_manual(name="",values=c("#999999", "#E69F00"))+
   scale_color_manual(name="",values=c("#999999", "#E69F00"))+
   scale_linetype_discrete(name="")+
@@ -128,13 +128,13 @@ starting.conc.sum<-rep(NA,4000)
 
 for (i in 1:4000){
   if(i<=1000){
-    scenario<-"Patient Respirator Only"
+    scenario<-"C. Patient Respirator Only"
   }else if (i>1000 & i<=2000){
-    scenario<-"No One with Respirators"
+    scenario<-"A. No One with Respirators"
   }else if (i>2000 & i<=3000){
-    scenario<-"First Responder Respirators Only"
+    scenario<-"B. First Responder Respirators Only"
   }else{
-    scenario<-"Patient and First Responder Respirator"
+    scenario<-"D. Patient and First Responder Respirator"
   }
   
   tempframe.surf<-allscenario.surfonly[[i]]
@@ -155,7 +155,7 @@ deposition.check<-data.frame(scenario=scenario.all,infect=infect.surf,surfdepo=s
 windows()
 ggplot(deposition.check)+
   geom_violin(aes(x=scenario,y=starting.conc.sum,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
-  scale_y_continuous(trans="log10",name="Amount of Virus on Surfaces")+
+  scale_y_continuous(trans="log10",name="Average Number of Viral Particles on Surfaces")+
   scale_x_discrete(name="",labels=c("","","",""))+
   scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
   theme_pubr()+
@@ -169,8 +169,8 @@ ggplot(deposition.check)+geom_violin(aes(x=scenario,y=infect.surf,group=scenario
 
 infect.frame<-data.frame(scenario=rep(scenario.all,2),infect=c(infect.airborne,infect.surf),
                          model=c(rep("Scenario 1",4000),rep("Scenario 2",4000)))
-infect.frame$scenario<-factor(infect.frame$scenario,levels=c("No One with Respirators", "First Responder Respirators Only","Patient Respirator Only",
-                                "Patient and First Responder Respirator"))
+infect.frame$scenario<-factor(infect.frame$scenario,levels=c("A. No One with Respirators", "B. First Responder Respirators Only","C. Patient Respirator Only",
+                                "D. Patient and First Responder Respirator"))
 windows()
 ggplot(infect.frame)+geom_violin(aes(x=scenario,y=infect,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
   scale_y_continuous(trans="log10",name="Infection Risk")+facet_wrap(~model)+
@@ -184,54 +184,62 @@ ggplot(infect.frame)+geom_violin(aes(x=scenario,y=infect,group=scenario,fill=sce
 #scenario 1-------------------------------------------------------------------------------------------------------------------
 
 #% changes in infection risk 
-baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="No One with Respirators" ])
+baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="A. No One with Respirators" ])
 
-summary(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="No One with Respirators" ])
-sd(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="No One with Respirators" ])
+summary(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="A. No One with Respirators" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="A. No One with Respirators" ])
 
 #First responder w/ respirator
-int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="First Responder Respirators Only" ])
+int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="B. First Responder Respirators Only" ])
 
 (baseline-int.1)/baseline*100
 
 #Patient w/ respirator
-int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient Respirator Only" ])
+int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="C. Patient Respirator Only" ])
 
 (baseline-int.2)/baseline*100
 
 #Both w/ respirator
-int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
 
-summary(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient and First Responder Respirator" ])
-sd(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+summary(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 1" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
 
 (baseline-int.3)/baseline*100
 
 #scenario 2--------------------------------------------------------------------------------------------------------------------
 
 #% changes in infection risk 
-baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
+baseline<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="A. No One with Respirators" ])
+
+summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="A. No One with Respirators" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="A. No One with Respirators" ])
 
 summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
 sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="No One with Respirators" ])
 
 #First responder w/ respirator
-int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="First Responder Respirators Only" ])
+int.1<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="B. First Responder Respirators Only" ])
 
 (baseline-int.1)/baseline*100
 
 #Patient w/ respirator
-int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient Respirator Only" ])
+int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="C. Patient Respirator Only" ])
 
 (baseline-int.2)/baseline*100
 
 #Both w/ respirator
-int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
 
 (baseline-int.3)/baseline*100
 
+<<<<<<< HEAD
+summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
+sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
+=======
 summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
 sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
+>>>>>>> 093b5289323d23292af2f3db12f4c4591241ef62
 
 
 
