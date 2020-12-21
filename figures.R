@@ -155,7 +155,7 @@ deposition.check<-data.frame(scenario=scenario.all,infect=infect.surf,surfdepo=s
 windows()
 ggplot(deposition.check)+
   geom_violin(aes(x=scenario,y=starting.conc.sum,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
-  scale_y_continuous(trans="log10",name="Average Number of Viral Particles on Surfaces")+
+  scale_y_continuous(trans="log10",name="Average Total Number of Viral Particles on Surfaces")+
   scale_x_discrete(name="",labels=c("","","",""))+
   scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
   theme_pubr()+
@@ -233,13 +233,9 @@ int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$
 
 (baseline-int.3)/baseline*100
 
-<<<<<<< HEAD
+
 summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
 sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responder Respirator" ])
-=======
-summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
-sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="Patient and First Responder Respirator" ])
->>>>>>> 093b5289323d23292af2f3db12f4c4591241ef62
 
 
 

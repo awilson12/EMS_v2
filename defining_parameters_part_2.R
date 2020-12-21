@@ -65,7 +65,7 @@ V.room<-9.9 #m^3
 I<-rtrunc(iter,"norm",mean=2.6E-2,sd=6.0E-3,a=1.4E-2) #m^3/min
 
 #mask efficacy
-M<-rtrunc(iter,"norm",mean=0.95,sd=0.1,a=0,b=1)
+M<-runif(iter,0.1,0.9)
 
 #air exchange rate (in units of per hour so multiply by 1/60 to conver to per min)
 AER<-runif(iter,12,32)*(1/60)
