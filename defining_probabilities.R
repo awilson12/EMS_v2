@@ -132,6 +132,26 @@ P.14.total<-c(rep(0,13),1,rep(0,2))
 P.15.total<-c(rep(0,14),1,0)
 P.16.total<-c(rep(0,15),1)
 
+P<-matrix(nrow=16,ncol=16)
+
+P[1,]<-P.1.total
+P[2,]<-P.2.total
+P[3,]<-P.3.total
+P[4,]<-P.4.total
+P[5,]<-P.5.total
+P[6,]<-P.6.total
+P[7,]<-P.7.total
+P[8,]<-P.8.total
+P[9,]<-P.9.total
+P[10,]<-P.10.total
+P[11,]<-P.11.total
+P[12,]<-P.12.total
+P[13,]<-P.13.total
+P[14,]<-P.14.total
+P[15,]<-P.15.total
+P[16,]<-P.16.total
+
+
 
 #probs<-matrix(nrow=16,ncol=16)
 #probs[1,]<-P.1.total

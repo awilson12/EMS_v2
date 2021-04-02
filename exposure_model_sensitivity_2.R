@@ -166,9 +166,10 @@ source('defining_parameters_part_2.R') #changing up mask efficacies
     
  # }#end of diameter loop (j)
   
-  params<-data.frame(TE.HS=TE.HS,TE.SH=TE.SH,TE.HF=TE.HF,H.surf=H.surf,H.face=H.face,H.eyes=H.eyes,
+  params<-data.frame(TE.HS=TE.HS,TE.SH=TE.SH,TE.HF=TE.HF,H.surf=H.surf,H.face=H.face,H.mask=H.mask,
+                     RNAinfective=RNAinfective,
                      S.H=S.H,S.F=S.F,A.hand=A.hand,inactiv.fome=inactiv.fome,inactiv.air=inactiv.air,
-                     inactiv.hands=inactiv.hands,I=I,M=M,AER=AER,alpha=alphaparam,beta=betaparam,
+                     inactiv.hands=inactiv.hands,I=I,M.patient.sourcecontrol=M.patient.sourcecontrol,AER=AER,alpha=alphaparam,beta=betaparam,
                      emissions=emissions,infect.track=infect.track)
   
   #save.all<<-save.list

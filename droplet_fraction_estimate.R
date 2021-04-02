@@ -1,6 +1,3 @@
-min.point<-13
-max.point<-232
-
 
 #relating min and max sars-cov-2 particles/cm^2 on surfaces needed to result in risks in scenario 2 on par with risks in scenario 1
 

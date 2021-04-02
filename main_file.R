@@ -29,9 +29,9 @@ for(a in 1:NUM.SIM){
   if(sim.name=="airborneonly"){if(dir.exists("airborneonly")==FALSE){dir.create("airborneonly"); setwd("airborneonly")}else{setwd("airborneonly")}}
   if(sim.name=="surfonly"){if(dir.exists("surfonly")==FALSE){dir.create("surfonly"); setwd("surfonly")}else{setwd("surfonly")}}
   
-  write.csv(plot.frame,file=sprintf('%s.%f.%f.plot.frame.csv',sim.name,iter,timestep))
-  saveRDS(all.scenario,file=sprintf('allscenario.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
-  saveRDS(all.params,file=sprintf('allparams.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
+  write.csv(plot.frame,file=sprintf('%s.%f.%f._v2.plot.frame.csv',sim.name,iter,timestep))
+  saveRDS(all.scenario,file=sprintf('allscenario_v2.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
+  saveRDS(all.params,file=sprintf('allparams_v2.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
   
   #reset directory to parent folder so we can go to correct subfolder within parent folder for next sim run
   setwd(this.dir)
@@ -67,9 +67,9 @@ require(ggpubr)
 
 saveRDS(params.sensitivity.output,'params.sensitivity.output.rds')
 
-summary(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.7*10^-2])
-max.point<-max(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track<=5.7E-2])
-min.point<-min(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.7E-2])
+summary(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.5*10^-4])
+max.point<-max(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track<=5.5E-4])
+min.point<-min(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.5E-4])
 
 windows()
 ggplot(data=params.sensitivity.output)+
@@ -77,8 +77,8 @@ ggplot(data=params.sensitivity.output)+
   geom_point(aes(x=val.contam,y=infect.track),size=2)+
   scale_x_continuous(name="Average Number of Viruses per Surface",trans="log10")+
   scale_y_continuous(name="Infection Risk",trans="log10")+
-  geom_hline(yintercept=8.3*10^-2,linetype="dashed",color="red",size=2)+
-  geom_text(label="Scenario 1A Mean Infection Risk",aes(x=0.3e-02,y=2e-01),size=6)+
+  geom_hline(yintercept=5.5*10^-4,linetype="dashed",color="red",size=2)+
+  geom_text(label="Scenario 1A Mean Infection Risk",aes(x=0.2e-02,y=2e-03),size=6)+
   theme_pubr()+
   theme(axis.text = element_text(size=20),axis.title=element_text(size=20))
 
@@ -124,12 +124,12 @@ params.sensitivity.output.2.intervention$riskreduce<-(params.sensitivity.output.
 
 windows()
 ggplot(data=params.sensitivity.output.2.intervention)+
-  geom_point(aes(x=M*100,y=riskreduce),size=2)+
-  geom_smooth(method='lm',aes(x=M*100,y=riskreduce))+
-  stat_poly_eq(aes(x=M*100,y=riskreduce,label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
+  geom_point(aes(x=M.patient.sourcecontrol*100,y=riskreduce),size=2)+
+  geom_smooth(method='lm',aes(x=M.patient.sourcecontrol*100,y=riskreduce))+
+  stat_poly_eq(aes(x=M.patient.sourcecontrol*100,y=riskreduce,label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
                parse = TRUE,formula=y~x,size=5)+ 
   scale_x_continuous(name="Mask Efficacy (%)")+
-  scale_y_continuous(name="Risk Reduction (%)")+
+  scale_y_continuous(name="Risk Reduction(%)")+
   theme_pubr()+
   theme(axis.text = element_text(size=20),axis.title=element_text(size=20))
 

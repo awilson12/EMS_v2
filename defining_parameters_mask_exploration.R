@@ -11,7 +11,8 @@ TE.SH<-runif(iter,0.0061,0.248)
 TE.HF<-rtrunc(iter,"norm",mean=0.3390,sd=0.1318,a=0,b=1)
   
 #hand-to-nonporous surface contact frequency
-H.surf<-rlnorm(iter,meanlog=log(4.1),sdlog=log(1.6)) 
+#H.surf<-rlnorm(iter,meanlog=log(4.1),sdlog=log(1.6)) 
+H.surf<-rtrunc(iter,"norm",mean=10.3,sd=3.4,a=5,b=16) #change during revision stage
   
 #fomite-specific contact frequencies
 glucometer<-H.surf*0.03
@@ -31,14 +32,12 @@ radio.SA<-50.84
 
 #hand-to-face contact frequency (in contacts/hr x 1 hr/60 min to conver to per min)
 
-#if not using mask
-H.mouth<-rtrunc(iter,"norm",mean=2.9,sd=2.5,a=0,b=10)*(1/60)
-H.nose<-rtrunc(iter,"norm",mean=2.5,sd=2.2,a=0,b=14)*(1/60)
 
-#if using mask
-H.eyes<-rtrunc(iter,"norm",mean=2.4,sd=1.9,a=0,b=8)*(1/60)
+#with respirator
+H.mask<-rtriangle(iter,2.3,17.8,5.4)*(1/60)
 
-H.face<-H.mouth+H.nose+H.eyes
+#without respirator
+H.face<-rtriangle(iter,12.8,22.9,20)*(1/60)
 
 #fraction of hand surface area for hand-to-surf contact
 S.H<-runif(iter,0.006,0.24)
