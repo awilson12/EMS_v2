@@ -170,7 +170,7 @@ ggplot(deposition.check)+
 
 ggplot(carryover.check)+
   geom_violin(aes(x=scenario,y=conc,group=interaction(scenario,type),fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
-  scale_y_continuous(trans="log10",name="Average Total Number of Viral Particles on Surfaces")+
+  scale_y_continuous(trans="log10",name="Average Total # of Viral Particles on Surfaces or in Air")+
   scale_x_discrete(name="",labels=c("","","",""))+
   scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
   theme_pubr()+

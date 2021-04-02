@@ -5,7 +5,7 @@
 allparams.surfonly <- readRDS("~/EMS_v2/surfonly/allparams.surfonly.1000.000000.0.001000.plot.frame.rds")
 allparams.airborneonly <- readRDS("~/EMS_v2/airborneonly/allparams.airborneonly.1000.000000.0.001000.plot.frame.rds")
 
-#(must run figures.R file first as this sets up infect.surf and infect.airborne)
+
 allparams.surfonly$loginfect<-log10(infect.surf)
 allparams.airborneonly$loginfect<-log10(infect.airborne)
 
@@ -19,6 +19,11 @@ airborne.cor<-signif(cor(allparams.airborneonly[0:1000,], method = c("spearman")
 View(airborne.cor[,22])
 
 #------------surfonly
+
+#patient with mask only
+#no one wears respirators
+surf.cor<-signif(cor(allparams.surfonly[1:1000,], method = c("spearman")),2)
+View(surf.cor[,22])
 
 #no one wears respirators
 surf.cor<-signif(cor(allparams.surfonly[1001:2000,], method = c("spearman")),2)
