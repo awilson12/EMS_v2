@@ -8,7 +8,8 @@ states<-c("room air","exhaust",
 
 #1->2 room air to exhaust
 
-lambda.1.2<-AER*(1/V.room)
+#lambda.1.2<-AER*(1/V.room)
+lambda.1.2<-AER*timestep
 
 #1->3:8 room air to surfaces
 

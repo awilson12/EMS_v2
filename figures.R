@@ -2,6 +2,9 @@
 require(ggplot2)
 require(ggpubr)
 
+airborneonly_1000_000000_0_001000_plot_frame<-read.csv('~/EMS_v2/airborneonly/airborneonly.1000.000000.0.001000.plot.framev2.csv')
+plot.frame<-airborneonly_1000_000000_0_001000_plot_frame
+
 plot.frame$model[plot.frame$model=="No one Masked"]<-"A. No One with Respirators or Masks"
 plot.frame$model[plot.frame$model=="Patient mask Only"]<-"C. Patient with Mask"
 plot.frame$model[plot.frame$model=="Patient and Paramedics Masked"]<-"D. Patient and First Responders with Mask or Respirators"
@@ -29,40 +32,46 @@ A<-ggplot(plot.frame.temp[plot.frame.temp$time<=5000,])+geom_line(aes(x=time*0.0
         strip.text=element_text(size=20))
 A
 
-plot.frame.temp<-plot.frame[plot.frame$state=="para hands 1" | plot.frame$state=="radio",]
-plot.frame.temp$state[plot.frame.temp$state=="para hands 1"]<-"First Responder's Hands"
-plot.frame.temp$state[plot.frame.temp$state=="radio"]<-"Radio"
-windows()
-A<-ggplot(plot.frame.temp[plot.frame.temp$time<=1600 & plot.frame.temp$model=="No one Masked",])+geom_line(aes(x=time*0.01,y=means,group=state,color=state),size=1.1)+
-  geom_ribbon(aes(x=time*0.01,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=state,fill=state),alpha=0.3)+
-  scale_x_continuous(name="Time (Minutes)",trans="log10")+theme_pubr()+
-  scale_y_continuous(name="Viral Particles",trans="log10")+
-  scale_fill_manual(name="",values=c("#999999", "#E69F00"))+
-  scale_color_manual(name="",values=c("#999999", "#E69F00"))+
-  scale_linetype_discrete(name="")+
-  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
-        legend.title=element_text(size=20),legend.text=element_text(size=20))
-A
+#plot.frame.temp<-plot.frame[plot.frame$state=="para hands 1" | plot.frame$state=="radio",]
+#plot.frame.temp$state[plot.frame.temp$state=="para hands 1"]<-"First Responder's Hands"
+#plot.frame.temp$state[plot.frame.temp$state=="radio"]<-"Radio"
+#windows()
+#A<-ggplot(plot.frame.temp[plot.frame.temp$time<=1600 & plot.frame.temp$model=="No one Masked",])+geom_line(aes(x=time*0.01,y=means,group=state,color=state),size=1.1)+
+#  geom_ribbon(aes(x=time*0.01,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=state,fill=state),alpha=0.3)+
+#  scale_x_continuous(name="Time (Minutes)",trans="log10")+theme_pubr()+
+#  scale_y_continuous(name="Viral Particles",trans="log10")+
+#  scale_fill_manual(name="",values=c("#999999", "#E69F00"))+
+#  scale_color_manual(name="",values=c("#999999", "#E69F00"))+
+#  scale_linetype_discrete(name="")+
+#  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+#        legend.title=element_text(size=20),legend.text=element_text(size=20))
+#A
 
-plot.frame.temp<-plot.frame[plot.frame$state=="para mucous 1" | plot.frame$state=="para mucous 2" |
-                              plot.frame$state=="resp para 1" | plot.frame$state=="resp para 2" |
-                              plot.frame$state=="room air" | plot.frame$state=="loss of viability",]
+#plot.frame.temp<-plot.frame[plot.frame$state=="para mucous 1" | plot.frame$state=="para mucous 2" |
+#                              plot.frame$state=="resp para 1" | plot.frame$state=="resp para 2" |
+#                              plot.frame$state=="room air" | plot.frame$state=="loss of viability",]
 
-windows()
-A<-ggplot(plot.frame.temp)+geom_line(aes(x=time,y=means,group=interaction(state,model),linetype=model))+
-  geom_ribbon(aes(x=time,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=model),alpha=0.3)+
-  #scale_y_continuous(trans="log10")+
-  facet_wrap(~state,scales="free")+
-  scale_x_continuous()+theme_pubr()+
-  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
-        legend.title=element_text(size=20),legend.text=element_text(size=20),
-        strip.text=element_text(size=20))
-A
+#windows()
+#A<-ggplot(plot.frame.temp)+geom_line(aes(x=time,y=means,group=interaction(state,model),linetype=model))+
+#  geom_ribbon(aes(x=time,ymax=means+(sd*1.96/sqrt(1000)),ymin=means-(sd*1.96/sqrt(1000)),group=interaction(state,model),fill=model),alpha=0.3)+
+#  scale_y_continuous(trans="log10")+
+#  facet_wrap(~state,scales="free")+
+#  scale_x_continuous()+theme_pubr()+
+#  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+#        legend.title=element_text(size=20),legend.text=element_text(size=20),
+#        strip.text=element_text(size=20))
+#A
 
-plot.frame<-airborneonly_1000_000000_0_001000_plot_frame
+
+#airborneonly_1000_000000_0_001000_plot_frame<-read.csv('~/EMS_v2/airborneonly/airborneonly.1000.000000.0.001000.plot.framev2.csv')
+#plot.frame<-airborneonly_1000_000000_0_001000_plot_frame
+
+#to check scenario 2, uncomment these statements and rerun
+surfonly_1000_000000_0_001000_plot_frame<-read.csv('~/EMS_v2/surfonly/surfonly.1000.000000.0.001000.plot.framev2.csv')
+plot.frame<-surfonly_1000_000000_0_001000_plot_frame
+
 plot.frame.temp<-plot.frame[!is.na(plot.frame$sd) & !is.na(plot.frame$means),]
 timestep<-0.001
-
 
 #para 1 doses, #para 2 doses and percentages attributable to aerosols vs fomites
 fracmucous1.model1<-plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient mask Only"]/(plot.frame.temp$means[plot.frame.temp$state=="para mucous 1" & plot.frame.temp$model=="Patient mask Only"]+plot.frame.temp$means[plot.frame.temp$state=="resp para 1"& plot.frame.temp$model=="Patient mask Only"])
@@ -89,15 +98,15 @@ frame.temp.2<-data.frame(fraction=c(fracmucous1.model1,fracmucous1.model2,fracmu
                                      rep("Patient and First Responder Respirator",length(fracmucous1.model4))),2))
 
 
-windows()
-ggplot(frame.temp.2[frame.temp.2$time>2 & frame.temp.2$time<=1600,],aes(x=time*timestep,y=fraction,fill=type))+geom_bar(stat="identity",alpha=0.5)+facet_wrap(~model)+
-  scale_x_continuous(name="Time (Minutes)")+
-  scale_y_continuous(name="Fraction of Dose")+
-  scale_fill_manual(name="Type of Dose",values=c("#999999", "#56B4E9"))+
-  theme_pubr()+
-  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
-        legend.title=element_text(size=20),legend.text=element_text(size=20),
-        strip.text=element_text(size=20))
+#windows()
+#ggplot(frame.temp.2[frame.temp.2$time>2 & frame.temp.2$time<=1600,],aes(x=time*timestep,y=fraction,fill=type))+geom_bar(stat="identity",alpha=0.5)+facet_wrap(~model)+
+#  scale_x_continuous(name="Time (Minutes)")+
+#  scale_y_continuous(name="Fraction of Dose")+
+#  scale_fill_manual(name="Type of Dose",values=c("#999999", "#56B4E9"))+
+#  theme_pubr()+
+#  theme(axis.text = element_text(size=18),axis.title=element_text(size=18),
+#        legend.title=element_text(size=20),legend.text=element_text(size=20),
+#        strip.text=element_text(size=20))
 
 frame.temp.2$fraction[frame.temp.2$time==12500 & frame.temp.2$type=="Respiratory Tract" & frame.temp.2$model=="No One with Respirators"]
 frame.temp.2$fraction[frame.temp.2$time==12500 & frame.temp.2$type=="Mucous Membrane" & frame.temp.2$model=="No One with Respirators"]
@@ -116,8 +125,8 @@ frame.temp.2$fraction[frame.temp.2$time==12500 & frame.temp.2$type=="Mucous Memb
 
 #first import rds for allsenario files
 
-allscenario.airborneonly <- readRDS("~/EMS_v2/airborneonly/allscenario.airborneonly.1000.000000.0.001000.plot.frame.rds")
-allscenario.surfonly <- readRDS("~/EMS_v2/surfonly/allscenario.surfonly.1000.000000.0.001000.plot.frame.rds")
+allscenario.airborneonly <- readRDS("~/EMS_v2/airborneonly/allscenario.airborneonly.1000.000000.0.001000.plot.framev2.rds")
+allscenario.surfonly <- readRDS("~/EMS_v2/surfonly/allscenario.surfonly.1000.000000.0.001000.plot.framev2.rds")
 
 scenario.all<-rep(NA,4000)
 infect.surf<-rep(NA,4000)
@@ -152,22 +161,23 @@ for (i in 1:4000){
     tempframe.surf$state6[1]+tempframe.surf$state7[1]+tempframe.surf$state8[1]
 }
 
-deposition.check<-data.frame(scenario=scenario.all,infect=infect.surf,surfdepo=surf.conc.sum,starting.conc.sum=starting.conc.sum)
+#deposition.check<-data.frame(scenario=scenario.all,infect=infect.surf,surfdepo=surf.conc.sum,starting.conc.sum=starting.conc.sum)
 carryover.check<-data.frame(conc=c(air.conc.sum,surf.conc.sum),
                             type=c(rep("Air",length(air.conc.sum)),rep("Surfaces",length(surf.conc.sum))),
                             scenario=rep(scenario.all,2))
 
-windows()
-ggplot(deposition.check)+
-  geom_violin(aes(x=scenario,y=starting.conc.sum,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
-  scale_y_continuous(trans="log10",name="Average Total Number of Viral Particles on Surfaces")+
-  scale_x_discrete(name="",labels=c("","","",""))+
-  scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
-  theme_pubr()+
-  theme(axis.title = element_text(size=20), axis.text=element_text(size=20),
-        legend.text= element_text(size=20),strip.text = element_text(size=20),legend.position = "right",
-        axis.ticks.x=element_blank())
+#windows()
+#ggplot(deposition.check)+
+#  geom_violin(aes(x=scenario,y=starting.conc.sum,group=scenario,fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
+#  scale_y_continuous(trans="log10",name="Average Total Number of Viral Particles on Surfaces")+
+#  scale_x_discrete(name="",labels=c("","","",""))+
+#  scale_fill_manual(name="",values=c("#999999", "#E69F00", "#56B4E9","#CC6666"))+
+#  theme_pubr()+
+#  theme(axis.title = element_text(size=20), axis.text=element_text(size=20),
+#        legend.text= element_text(size=20),strip.text = element_text(size=20),legend.position = "right",
+#        axis.ticks.x=element_blank())
 
+windows()
 ggplot(carryover.check)+
   geom_violin(aes(x=scenario,y=conc,group=interaction(scenario,type),fill=scenario),draw_quantiles = c(0.25,0.5,0.75),alpha=0.5)+
   scale_y_continuous(trans="log10",name="Average Total # of Viral Particles on Surfaces or in Air")+
@@ -180,8 +190,8 @@ ggplot(carryover.check)+
         axis.ticks.x=element_blank())
   
 
-ggplot(deposition.check)+geom_violin(aes(x=scenario,y=infect.surf,group=scenario,fill=scenario))+
-  scale_y_continuous(trans="log10")
+#ggplot(deposition.check)+geom_violin(aes(x=scenario,y=infect.surf,group=scenario,fill=scenario))+
+#  scale_y_continuous(trans="log10")
 
 infect.frame<-data.frame(scenario=rep(scenario.all,2),infect=c(infect.airborne,infect.surf),
                          model=c(rep("Scenario 1",4000),rep("Scenario 2",4000)))
@@ -245,7 +255,6 @@ int.2<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$
 int.3<-mean(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responders with Mask or Respirators" ])
 
 (baseline-int.3)/baseline*100
-
 
 summary(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responders with Mask or Respirators" ])
 sd(infect.frame$infect[infect.frame$model=="Scenario 2" & infect.frame$scenario=="D. Patient and First Responders with Mask or Respirators" ])

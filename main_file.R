@@ -29,9 +29,9 @@ for(a in 1:NUM.SIM){
   if(sim.name=="airborneonly"){if(dir.exists("airborneonly")==FALSE){dir.create("airborneonly"); setwd("airborneonly")}else{setwd("airborneonly")}}
   if(sim.name=="surfonly"){if(dir.exists("surfonly")==FALSE){dir.create("surfonly"); setwd("surfonly")}else{setwd("surfonly")}}
   
-  write.csv(plot.frame,file=sprintf('%s.%f.%f._v2.plot.frame.csv',sim.name,iter,timestep))
-  saveRDS(all.scenario,file=sprintf('allscenario_v2.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
-  saveRDS(all.params,file=sprintf('allparams_v2.%s.%f.%f.plot.frame.rds',sim.name,iter,timestep))
+  write.csv(plot.frame,file=sprintf('%s.%f.%f.plot.framev2.csv',sim.name,iter,timestep))
+  saveRDS(all.scenario,file=sprintf('allscenario.%s.%f.%f.plot.framev2.rds',sim.name,iter,timestep))
+  saveRDS(all.params,file=sprintf('allparams.%s.%f.%f.plot.framev2.rds',sim.name,iter,timestep))
   
   #reset directory to parent folder so we can go to correct subfolder within parent folder for next sim run
   setwd(this.dir)
@@ -67,9 +67,11 @@ require(ggpubr)
 
 saveRDS(params.sensitivity.output,'params.sensitivity.output.rds')
 
-summary(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.5*10^-4])
-max.point<-max(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track<=5.5E-4])
-min.point<-min(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=5.5E-4])
+mean.scenario.1<-2.9*10^-2
+
+summary(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=mean.scenario.1])
+max.point<-max(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track<=mean.scenario.1])
+min.point<-min(params.sensitivity.output$val.contam[params.sensitivity.output$infect.track>=mean.scenario.1])
 
 windows()
 ggplot(data=params.sensitivity.output)+
@@ -77,10 +79,14 @@ ggplot(data=params.sensitivity.output)+
   geom_point(aes(x=val.contam,y=infect.track),size=2)+
   scale_x_continuous(name="Average Number of Viruses per Surface",trans="log10")+
   scale_y_continuous(name="Infection Risk",trans="log10")+
-  geom_hline(yintercept=5.5*10^-4,linetype="dashed",color="red",size=2)+
-  geom_text(label="Scenario 1A Mean Infection Risk",aes(x=0.2e-02,y=2e-03),size=6)+
+  geom_hline(yintercept=mean.scenario.1,linetype="dashed",color="red",size=2)+
+  geom_text(label="Scenario 1A Mean Infection Risk",aes(x=0.2e-02,y=1e-01),size=6)+
   theme_pubr()+
   theme(axis.text = element_text(size=20),axis.title=element_text(size=20))
+
+
+this.dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+setwd(this.dir)   
 
 source('droplet_fraction_estimate.R')
 min.frac
@@ -118,7 +124,6 @@ if(dir.exists("sensitivity_scenario2")==FALSE){dir.create("sensitivity_scenario2
 
 params.sensitivity.output.2.intervention<-params
 saveRDS(params.sensitivity.output.2.intervention,file="param.sensitivity.2.intervention.rds")
-
 
 params.sensitivity.output.2.intervention$riskreduce<-(params.sensitivity.output.2.baseline$infect.track-params.sensitivity.output.2.intervention$infect.track)/(params.sensitivity.output.2.baseline$infect.track)*100
 

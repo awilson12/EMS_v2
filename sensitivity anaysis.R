@@ -2,8 +2,8 @@
 #load in all params files
 
 
-allparams.surfonly <- readRDS("~/EMS_v2/surfonly/allparams.surfonly.1000.000000.0.001000.plot.frame.rds")
-allparams.airborneonly <- readRDS("~/EMS_v2/airborneonly/allparams.airborneonly.1000.000000.0.001000.plot.frame.rds")
+allparams.surfonly <- readRDS("~/EMS_v2/surfonly/allparams.surfonly.1000.000000.0.001000.plot.framev2.rds")
+allparams.airborneonly <- readRDS("~/EMS_v2/airborneonly/allparams.airborneonly.1000.000000.0.001000.plot.framev2.rds")
 
 
 allparams.surfonly$loginfect<-log10(infect.surf)
@@ -15,7 +15,7 @@ airborne.cor<-signif(cor(allparams.airborneonly[3001:4000,], method = c("spearma
 View(airborne.cor[,22])
 
 #patients wear respirators
-airborne.cor<-signif(cor(allparams.airborneonly[0:1000,], method = c("spearman")),2)
+airborne.cor<-signif(cor(allparams.airborneonly[1:1000,], method = c("spearman")),2)
 View(airborne.cor[,22])
 
 #------------surfonly

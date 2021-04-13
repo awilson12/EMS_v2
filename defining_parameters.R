@@ -66,7 +66,9 @@ I<-rtrunc(iter,"norm",mean=2.6E-2,sd=6.0E-3,a=1.4E-2) #m^3/min
 n.param<-10
 k.param<-3
 M.EMS<-1-rbeta(iter,shape1=k.param,shape2=n.param-k.param+1) #changed from original model based on reviewer feedback
-
+mean.ems<-k.param/(n.param-k.param+1+k.param)
+mean.ems
+1-mean.ems
 #filteration efficacy for patient
 
 #method of moments to fit beta distribution based on mean and sd reported by Lindsley
